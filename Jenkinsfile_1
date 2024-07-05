@@ -4,18 +4,20 @@ pipeline {
     stages {
         stage('STAGE 1') {
             steps {
-                sh "sleep 5"
+                sh "sleep 15"
             }
         }
 
         stage('STAGE 2') {
             steps {
-                sh "sleep 5"
+                sh "sleep 15"
             }
         }
 
         stage('STAGE 3') {
-            sh "sleep 5"
+            steps {
+                sh "sleep 15"
+            }
         }
     }
 }
