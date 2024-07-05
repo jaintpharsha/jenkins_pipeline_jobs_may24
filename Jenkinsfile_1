@@ -1,22 +1,29 @@
 pipeline {
-    agent {
-        label 'slave1'
-    }
+    agent none
 
     stages {
         stage('STAGE 1') {
+            agent {
+                label 'master'
+            }
             steps {
                 sh "sleep 5"
             }
         }
 
         stage('STAGE 2') {
+            agent {
+                label 'slave1'
+            }
             steps {
                 sh "sleep 5"
             }
         }
 
         stage('STAGE 3') {
+            agent {
+                label 'slave2'
+            }
             steps {
                 sh "sleep 5"
             }
