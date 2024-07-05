@@ -1,8 +1,8 @@
 pipeline {
-    agent {
-        label 'master'
+    agent none
+    triggers {
+        pollSCM('*/15 * * * *')
     }
-
     stages {
         stage('STAGE 1') {
             agent {
@@ -23,7 +23,9 @@ pipeline {
         }
 
         stage('STAGE 3') {
-
+            agent {
+                label 'slave2'
+            }
             steps {
                 sh "sleep 5"
             }
