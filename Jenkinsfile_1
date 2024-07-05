@@ -1,10 +1,12 @@
 pipeline {
-    agent none
+    agent {
+        label 'master'
+    }
 
     stages {
         stage('STAGE 1') {
             agent {
-                label 'master'
+                label 'salve1'
             }
             steps {
                 sh "sleep 5"
@@ -13,7 +15,7 @@ pipeline {
 
         stage('STAGE 2') {
             agent {
-                label 'slave1'
+                label 'slave2'
             }
             steps {
                 sh "sleep 5"
@@ -21,9 +23,7 @@ pipeline {
         }
 
         stage('STAGE 3') {
-            agent {
-                label 'slave2'
-            }
+
             steps {
                 sh "sleep 5"
             }
