@@ -10,7 +10,7 @@ pipeline {
             }
         }
 
-        stage('Check Files') {
+        stage('Check Files with git') {
             steps {
                 sh 'ls -lrt'
             }
@@ -25,7 +25,7 @@ pipeline {
             }
         }
 
-        stage('Check Files') {
+        stage('Check Files with checkout') {
             steps {
                 sh 'ls -lrt'
             }
