@@ -17,7 +17,7 @@ pipeline {
 
         stage('BUILD_main') {
             when {
-                environment name: 'BRANCH', value: 'main'
+                branch 'main'
             }
             steps {
                 echo "BUILDING the app from main branch"
@@ -27,7 +27,7 @@ pipeline {
 
         stage('BUILD_dev') {
             when {
-                environment name: 'BRANCH', value: 'dev'
+                branch 'dev'
             }
             steps {
                 echo "BUILDING the app from dev branch"
