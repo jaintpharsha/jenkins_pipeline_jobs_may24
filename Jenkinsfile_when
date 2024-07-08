@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    stages {
+        stage('checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'dev']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/ip_app.git',
+                        credentialsId: 'github_hp']]])
+            }
+        }
+
+        stage('BUILD_main') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "BUILDING the app from main branch"
+                sh 'ls -lrt'
+            }
+        }
+
+        stage('BUILD_dev') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                echo "BUILDING the app from dev branch"
+                sh 'ls -lrt'
+            }
+        }
+    }
+}
