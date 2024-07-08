@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Code Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'github_hp', url: 'https://github.com/harshaprakash100/ip_app.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'ls -lrt'
+            }
+        }
+    }
+}

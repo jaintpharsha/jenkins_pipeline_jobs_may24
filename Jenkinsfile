@@ -1,10 +1,23 @@
 pipeline {
     agent any
     stages {
-        stage('Fist Stage'){
+        stage('BUILD'){
           steps {
-              echo "Sample Declarative piplein stage"
-              sh "ls -lrt"
+              echo "First Stage"
+              sh "sleep 5"
+          }
+        }
+
+        stage('TEST'){
+          steps {
+              echo "First Stage"
+              sh "sleep 5"
+          }
+        }
+
+        stage('DEPLOY'){
+          steps {
+              echo "First Stage"
               sh "sleep 5"
           }
         }

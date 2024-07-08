@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM',
+                                branches: [[name: branchName]],
+                                doGenerateSubmoduleConfigurations: false,
+                                extensions: [],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: 'https://github.com/itdefined/ITD.git',
+                                                    credentialsId: 'git_hub']]])
+                }
+            }
+        }
+    }
+}
