@@ -1,10 +1,15 @@
 pipeline {
     agent any
+
+    environment {
+        BRANCH = 'main'
+    }
+
     stages {
         stage('checkout') {
             steps {
                 checkout([$class: 'GitSCM',
-                        branches: [[name: 'main']],
+                        branches: [[name: "${env.BRANCH}"]],
                         userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/ip_app.git',
                         credentialsId: 'github_hp']]])
             }
@@ -12,7 +17,7 @@ pipeline {
 
         stage('BUILD_main') {
             when {
-                branch 'main'
+                environment name: 'BRANCH', value: 'main'
             }
             steps {
                 echo "BUILDING the app from main branch"
@@ -22,7 +27,7 @@ pipeline {
 
         stage('BUILD_dev') {
             when {
-                branch 'dev'
+                environment name: 'BRANCH', value: 'dev'
             }
             steps {
                 echo "BUILDING the app from dev branch"
