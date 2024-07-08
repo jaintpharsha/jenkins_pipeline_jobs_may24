@@ -19,8 +19,8 @@ pipeline {
         stage('Code Checkout with checkout') {
             steps {
                 checkout([$class: 'GitSCM',
-                        branches: [[name: '*/main']],
-                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        branches: [[name: 'dev']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/ip_app.git',
                         credentialsId: 'github_hp']]])
             }
         }
