@@ -2,22 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Code Checkout') {
+        stage('Code Checkout with git') {
             steps {
-                git branch: 'main', credentialsId: 'github_hp', url: 'https://github.com/harshaprakash100/ip_app.git'
+                git branch: 'main',
+                    credentialsId: 'github_hp',
+                    url: 'https://github.com/harshaprakash100/ip_app.git'
             }
         }
 
-        stage('Build1') {
+        stage('Check Files') {
             steps {
                 sh 'ls -lrt'
             }
         }
 
-        stage('Build2') {
+        stage('Code Checkout with checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: '*/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        credentialsId: 'git_hub']]])
+            }
+        }
+
+        stage('Check Files') {
             steps {
                 sh 'ls -lrt'
             }
         }
+
     }
 }
