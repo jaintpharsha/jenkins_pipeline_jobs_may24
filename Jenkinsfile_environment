@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    environment {
+        APP = 'frontend'
+        DB_URL = '192.168.28.24'
+    }
+
+    stages {
+        stage('Environment Variable') {
+            steps {
+                script {
+                    echo "${env.APP}: ${env.DB_URL}"
+                }
+
+                sh "echo ${APP}"
+            }
+        }
+    }
+}
