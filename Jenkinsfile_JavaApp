@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     tools {
         maven 'maven_tool'
@@ -12,9 +12,7 @@ pipeline {
     stages {
 
         stage('Code Checkout with checkout') {
-            agent {
-                label 'slave2'
-            }
+
 
             steps {
                 checkout([$class: 'GitSCM',
@@ -25,9 +23,6 @@ pipeline {
         }
 
         stage('Build-Maven') {
-            agent {
-                label 'slave2'
-            }
 
             steps {
                 sh '''
