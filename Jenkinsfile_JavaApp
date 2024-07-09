@@ -31,6 +31,7 @@ pipeline {
 
             steps {
                 sh '''
+                    ls -lrt
                     cd ./calculator_app/
                     mvn clean package
                 '''
