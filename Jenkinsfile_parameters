@@ -1,9 +1,10 @@
 pipeline {
     agent any
+
     options {
         timestamps()
-        timeout(time: 10, unit: 'SECONDS')
     }
+
     parameters {
         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
 
