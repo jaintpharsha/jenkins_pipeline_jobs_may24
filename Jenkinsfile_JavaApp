@@ -31,7 +31,7 @@ pipeline {
 
             steps {
                 sh '''
-                    cd ./simple-war/
+                    cd ./calculator_app/
                     mvn clean package
                 '''
             }
