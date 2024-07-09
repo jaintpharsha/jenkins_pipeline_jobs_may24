@@ -11,6 +11,13 @@ pipeline {
             }
         }
 
+        stage('Check Branch') {
+            steps {
+                echo "BUILDING the app from main branch"
+                sh 'echo $GIT_BRANCH $BRANCH_NAME'
+            }
+        }
+
         stage('BUILD_main') {
             when {
                 environment name: 'GIT_BRANCH', value: 'origin/main'
