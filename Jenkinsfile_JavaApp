@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven_tool'
+    }
+
+    stages {
+
+        stage('Code Checkout with checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        credentialsId: 'github_hp']]])
+            }
+        }
+
+        stage('Build-Maven') {
+            steps {
+                sh '''
+                    cd ./simple-war/
+                    mvn clean test
+                '''
+            }
+        }
+
+        // stage('Deploy-Tomcat') {
+        //     steps {
+        //         script {
+        //             deploy adapters: [tomcat9(credentialsId: 'tomcat-manager', path: '', url: 'http://3.6.89.223:8080/')],
+        //                              contextPath: '/itdefined-war-1.0.0',
+        //                              war: 'maven/simple-war/target/itdefined-war-1.0.0.war'
+        //         }
+        //     }
+        // }
+    }
+
+}
