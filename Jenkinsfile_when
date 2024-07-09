@@ -12,8 +12,16 @@ pipeline {
 
         stage('Check Branch') {
             steps {
-                echo "BUILDING the app from main branch"
-                sh 'echo -- $BRANCH_NAME -- $GIT_BRANCH'
+                script {
+                    def currentBranch = env.BRANCH_NAME
+                    echo "Current branch: ${currentBranch}"
+                    if (currentBranch == 'main') {
+                        echo "BUILDING the app from main branch"
+                        sh 'ls -lrt'
+                    } else {
+                        echo "Skipping build for branch ${currentBranch}"
+                    }
+                }
             }
         }
 
