@@ -4,23 +4,15 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                checkout([$class: 'GitSCM',
-                        branches: [[name: 'dev']],
-                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/ip_app.git',
-                        credentialsId: 'github_hp']]])
-            }
-        }
-
-        stage('Check Branch') {
-            steps {
-                echo "BUILDING the app from main branch"
-                sh 'echo $GIT_BRANCH $BRANCH_NAME'
+                git branch: 'main',
+                    credentialsId: 'github_hp',
+                    url: 'https://github.com/harshaprakash100/ip_app.git'
             }
         }
 
         stage('BUILD_main') {
             when {
-                environment name: 'GIT_BRANCH', value: 'origin/main'
+                branch 'main'
             }
             steps {
                 echo "BUILDING the app from main branch"
@@ -30,7 +22,7 @@ pipeline {
 
         stage('BUILD_dev') {
             when {
-                environment name: 'GIT_BRANCH', value: 'origin/dev'
+                branch 'dev'
             }
             steps {
                 echo "BUILDING the app from dev branch"
