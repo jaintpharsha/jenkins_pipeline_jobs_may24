@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'slave1'
-    }
+    agent any
 
     tools {
         maven 'maven_tool'
@@ -22,12 +20,42 @@ pipeline {
             }
         }
 
-        stage('Build-Maven') {
+        stage('Unit Testing') {
             steps {
                 sh '''
                     ls -lrt
                     cd ./calculator_app/
-                    mvn clean package
+                    mvn clean test
+                '''
+            }
+        }
+
+        stage('Integration Test') {
+            steps {
+                sh '''
+                    ls -lrt
+                    cd ./calculator_app/
+                    mvn clean integration-test
+                '''
+            }
+        }
+
+        stage('Performance Test - JMeter') {
+            steps {
+                sh '''
+                    ls -lrt
+                    cd ./calculator_app/
+                    mvn clean verify
+                '''
+            }
+        }
+
+        stage('Build Package') {
+            steps {
+                sh '''
+                    ls -lrt
+                    cd ./calculator_app/
+                    mvn clean package -Dmaven.test.skip=true
                 '''
             }
         }
