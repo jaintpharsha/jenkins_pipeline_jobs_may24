@@ -11,6 +11,13 @@ pipeline {
         }
 
         stage('BUILD_main') {
+            steps {
+                echo "BUILDING the app from main branch"
+                sh 'echo ----- $BRANCH_NAME $GIT_BRANCH'
+            }
+        }
+
+        stage('BUILD_main') {
             when {
                 branch 'main'
             }

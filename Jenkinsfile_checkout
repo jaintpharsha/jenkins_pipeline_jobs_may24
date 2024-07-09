@@ -30,6 +30,5 @@ pipeline {
                 sh 'ls -lrt'
             }
         }
-
     }
 }
