@@ -10,10 +10,10 @@ pipeline {
             }
         }
 
-        stage('BUILD_main') {
+        stage('Check Branch') {
             steps {
                 echo "BUILDING the app from main branch"
-                sh 'echo ----- $BRANCH_NAME $GIT_BRANCH'
+                sh 'echo $BRANCH_NAME $GIT_BRANCH'
             }
         }
 
