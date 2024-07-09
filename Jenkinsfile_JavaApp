@@ -12,8 +12,6 @@ pipeline {
     stages {
 
         stage('Code Checkout with checkout') {
-
-
             steps {
                 checkout([$class: 'GitSCM',
                         branches: [[name: 'main']],
@@ -23,7 +21,6 @@ pipeline {
         }
 
         stage('Build-Maven') {
-
             steps {
                 sh '''
                     ls -lrt
