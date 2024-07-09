@@ -35,6 +35,7 @@ pipeline {
                 sh '''
                     ls -lrt
                     cd ./calculator_app/
+                    mvn jmeter:configure
                     mvn clean integration-test
                 '''
             }
