@@ -33,9 +33,17 @@ pipeline {
         stage('Deploy-Tomcat') {
             steps {
                 script {
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', path: '', url: "${env.TOMCAT_URL}")],
-                                     contextPath: '/calculator',
-                                     war: 'calculator_app/target/calculator.war'
+                    // deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', path: '', url: "${env.TOMCAT_URL}")],
+                    //                  contextPath: '/calculator',
+                    //                  war: 'calculator_app/target/calculator.war'
+
+                    deployContainer(
+                        credentialsId: 'tomcat_manager',
+                        containerId: 'tomcat', // ID of your Tomcat container configured in Jenkins
+                        war: 'calculator_app/target/calculator.war',
+                        contextPath: '/calculator',
+                        url: "${env.TOMCAT_URL}"
+                    )
                 }
             }
         }
