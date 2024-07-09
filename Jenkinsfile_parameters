@@ -29,7 +29,7 @@ pipeline {
 
                 echo "Password: ${params.PASSWORD}"
 
-                sh 'sleep 60'
+                sh 'sleep 10'
             }
         }
     }
