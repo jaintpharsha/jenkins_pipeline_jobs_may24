@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        BRANCH = 'main'
-    }
-
     stages {
         stage('checkout') {
             steps {
@@ -17,7 +13,7 @@ pipeline {
 
         stage('BUILD_main') {
             when {
-                environment name: 'BRANCH', value: 'main'
+                environment name: 'BRANCH_NAME', value: 'main'
             }
             steps {
                 echo "BUILDING the app from main branch"
@@ -28,7 +24,7 @@ pipeline {
         stage('BUILD_dev') {
             when {
                 not {
-                    environment name: 'BRANCH', value: 'dev'
+                    environment name: 'BRANCH_NAME', value: 'dev'
                 }
             }
             steps {
