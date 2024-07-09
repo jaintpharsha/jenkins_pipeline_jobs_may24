@@ -13,7 +13,7 @@ pipeline {
 
         stage('Code Checkout with checkout') {
             agent {
-                label 'slave1'
+                label 'slave2'
             }
 
             steps {
