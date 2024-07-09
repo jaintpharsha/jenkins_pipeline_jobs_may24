@@ -4,6 +4,7 @@ pipeline {
     options {
         timestamps()
         disableConcurrentBuilds(abortPrevious: true)
+        logRotator(numToKeepStr: '2'))
     }
 
     parameters {
