@@ -1,13 +1,21 @@
 pipeline {
-    agent any
+    agent none
 
     tools {
         maven 'maven_tool'
     }
 
+    environment {
+        TOMCAT_URL = 'http://3.110.117.248:8080/'
+    }
+
     stages {
 
         stage('Code Checkout with checkout') {
+            agent {
+                label 'slave1'
+            }
+
             steps {
                 checkout([$class: 'GitSCM',
                         branches: [[name: 'main']],
@@ -17,23 +25,27 @@ pipeline {
         }
 
         stage('Build-Maven') {
+            agent {
+                label 'slave2'
+            }
+
             steps {
                 sh '''
                     cd ./simple-war/
-                    mvn clean test
+                    mvn clean package
                 '''
             }
         }
 
-        // stage('Deploy-Tomcat') {
-        //     steps {
-        //         script {
-        //             deploy adapters: [tomcat9(credentialsId: 'tomcat-manager', path: '', url: 'http://3.6.89.223:8080/')],
-        //                              contextPath: '/itdefined-war-1.0.0',
-        //                              war: 'maven/simple-war/target/itdefined-war-1.0.0.war'
-        //         }
-        //     }
-        // }
+        stage('Deploy-Tomcat') {
+            steps {
+                script {
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', path: '', url: "${env.TOMCAT_URL}")],
+                                     contextPath: '/calculator',
+                                     war: 'calculator_app/target/calculator.war'
+                }
+            }
+        }
     }
 
 }
