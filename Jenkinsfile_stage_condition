@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    boolean testStatus = true
+
+    stages {
+        stage('BUILD') {
+            steps {
+                    echo "This is STAGE 1"
+            }
+        }
+
+        stage('TEST') {
+            steps {
+                try {
+                    echo "Running the test cases"
+                    sh 'sleep 5'
+                    sh 'exit 1'
+                } catch (Exception e) {
+                    echo "Got an exception, need to handle it."
+                    echo "$e"
+                    testStatus = false
+                }
+            }
+        }
+
+        stage('DEPLOY') {
+            steps {
+                if (testStatus == true) {
+                    echo "Deploy the app to server"
+                } else {
+                    echo "Skipping Deployment"
+                }
+            }
+        }
+
+        stage('NOTIFICATION') {
+            steps {
+                if (testStatus == false) {
+                    echo "Notify the test failure"
+                } else {
+                    echo "Skipping Notification"
+                }
+            }
+        }
+    }
+}
