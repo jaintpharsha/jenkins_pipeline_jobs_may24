@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('BUILD') {
+            steps {
+                echo "Compile and Build the applicaition"
+            }
+        }
+
+        stage('Parallel Testing') {
+            parallel {
+                stage('Test in Chrome') {
+                    steps {
+                        echo "Tesing in Chrome Browser"
+                    }
+                }
+
+                stage('Test in Opera') {
+                    steps {
+                        echo "Tesing in Opera Browser"
+                    }
+                }
+
+                stage('Test in Safari') {
+                    steps {
+                        echo "Tesing in Safari Browser"
+                    }
+                }
+
+                stage('Test in Firefox') {
+                    steps {
+                        echo "Tesing in Firefox Browser"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploy the application to server"
+            }
+        }
+    }
+}
