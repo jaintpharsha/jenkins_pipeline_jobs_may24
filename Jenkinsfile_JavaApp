@@ -77,6 +77,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
                         sh '''
+                            #!/bin/bash
                             echo "TOMCAT_URL: $TOMCAT_URL"
                             echo "CONTEXT_PATH: $CONTEXT_PATH"
                             curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"
