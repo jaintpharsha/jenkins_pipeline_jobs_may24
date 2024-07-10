@@ -81,29 +81,52 @@ pipeline {
         //     }
         // }
 
+        // stage('Deploy-Tomcat') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        //                 sh '''
+        //                     #!/bin/bash
+
+        //                     echo "TOMCAT_URL: $TOMCAT_URL"
+        //                     echo "CONTEXT_PATH: $CONTEXT_PATH"
+        //                     curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"
+        //                     check_app=$(curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH})
+
+        //                     if [[ -n "$check_app" ]]; then
+        //                         echo "Application already exists, undeploy it first"
+        //                         curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/undeploy?path=${CONTEXT_PATH}
+        //                         echo "Undeployed existing application."
+        //                     fi
+
+        //                     echo "Deploying application to Tomcat."
+        //                     curl -s -u ${USERNAME}:${PASSWORD} -T calculator_app/target/calculator.war ${TOMCAT_URL}/manager/text/deploy?path=${CONTEXT_PATH}
+        //                 '''
+        //         }
+        //     }
+        // }
+
         stage('Deploy-Tomcat') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh '''
-                            #!/bin/bash
+                    script {
+                        echo "TOMCAT_URL: ${env.TOMCAT_URL}"
+                        echo "CONTEXT_PATH: ${env.CONTEXT_PATH}"
 
-                            echo "TOMCAT_URL: $TOMCAT_URL"
-                            echo "CONTEXT_PATH: $CONTEXT_PATH"
-                            curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"
-                            check_app=$(curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH})
+                        def check_app = sh(script: "curl -s -u ${env.USERNAME}:${env.PASSWORD} ${env.TOMCAT_URL}/manager/text/list | grep ${env.CONTEXT_PATH}", returnStdout: true).trim()
 
-                            if [[ -n "$check_app" ]]; then
-                                echo "Application already exists, undeploy it first"
-                                curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/undeploy?path=${CONTEXT_PATH}
-                                echo "Undeployed existing application."
-                            fi
+                        if (check_app) {
+                            echo "Application already exists, undeploying it first"
+                            sh "curl -s -u ${env.USERNAME}:${env.PASSWORD} ${env.TOMCAT_URL}/manager/text/undeploy?path=${env.CONTEXT_PATH}"
+                            echo "Undeployed existing application."
+                        }
 
-                            echo "Deploying application to Tomcat."
-                            curl -u ${USERNAME}:${PASSWORD} -T calculator_app/target/calculator.war ${TOMCAT_URL}/manager/text/deploy?path=${CONTEXT_PATH}
-                        '''
+                        echo "Deploying application to Tomcat."
+                        sh "curl -s -u ${env.USERNAME}:${env.PASSWORD} -T calculator_app/target/calculator.war ${env.TOMCAT_URL}/manager/text/deploy?path=${env.CONTEXT_PATH}"
+                    }
                 }
             }
         }
+
     }
 
 }
