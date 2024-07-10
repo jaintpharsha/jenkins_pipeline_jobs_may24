@@ -16,7 +16,7 @@ pipeline {
                     try {
                         echo "Running the test cases"
                         sh 'sleep 5'
-                        sh 'exit 1'
+                        // sh 'exit 1'
                     } catch (Exception e) {
                         echo "Got an exception, need to handle it."
                         echo "$e"
@@ -29,7 +29,7 @@ pipeline {
         stage('DEPLOY') {
             steps {
                 script {
-                    if (testStatus == true) {
+                    if (testStatus) {
                         echo "Deploy the app to server"
                     } else {
                         echo "Skipping Deployment"
@@ -41,7 +41,7 @@ pipeline {
         stage('NOTIFICATION') {
             steps {
                 script {
-                    if (testStatus == false) {
+                    if (!testStatus) {
                         echo "Notify the test failure"
                     } else {
                         echo "Skipping Notification"
