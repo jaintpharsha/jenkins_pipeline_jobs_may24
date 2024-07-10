@@ -6,7 +6,8 @@ pipeline {
     }
 
     environment {
-        TOMCAT_URL = 'http://3.110.117.248:8080/'
+        TOMCAT_URL = 'http://13.201.73.164:8080/'
+        CONTEXT_PATH = '/calculator'
     }
 
     stages {
@@ -61,12 +62,24 @@ pipeline {
             }
         }
 
+        // stage('Deploy-Tomcat') {
+        //     steps {
+        //         script {
+        //             deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', path: '', url: "${env.TOMCAT_URL}")],
+        //                              contextPath: "${env.CONTEXT_PATH}",
+        //                              war: 'calculator_app/target/calculator.war'
+        //         }
+        //     }
+        // }
+
         stage('Deploy-Tomcat') {
             steps {
-                script {
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', path: '', url: "${env.TOMCAT_URL}")],
-                                     contextPath: '/calculator',
-                                     war: 'calculator_app/target/calculator.war'
+                withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
+                        def curlCmd = "curl -T calculator_app/target/calculator.war ${env.TOMCAT_URL}/manager/text/deploy?path=${env.CONTEXT_PATH} -u ${USERNAME}:${PASSWORD}"
+                        def result = sh(script: curlCmd, returnStdout: true).trim()
+                        echo "Deployment result: ${result}"
+                    }
                 }
             }
         }
