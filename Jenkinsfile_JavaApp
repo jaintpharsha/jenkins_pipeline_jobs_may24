@@ -75,6 +75,7 @@ pipeline {
         stage('Deploy-Tomcat') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "chmod +x ./tomcat_deploy.sh"
                         sh "./tomcat_deploy.sh ${USERNAME} ${PASSWORD} ${TOMCAT_URL} ${CONTEXT_PATH}"
                 }
             }
