@@ -76,6 +76,16 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
+
+                        def checkAppCmd = "curl -s -u ${USERNAME}:${PASSWORD} ${env.TOMCAT_URL}/manager/text/list"
+                        def existingApps = sh(script: checkAppCmd, returnStdout: true).trim()
+
+                        if (existingApps.contains(CONTEXT_PATH)) {
+                            echo "Application already exists, undeploy it first"
+                            sh "curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/undeploy?path=${CONTEXT_PATH}"
+                            echo "Undeployed existing application."
+                        }
+
                         def curlCmd = "curl -T calculator_app/target/calculator.war ${env.TOMCAT_URL}/manager/text/deploy?update=true&path=${env.CONTEXT_PATH} -u ${USERNAME}:${PASSWORD}"
                         def result = sh(script: curlCmd, returnStdout: true).trim()
                         echo "Deployment result: ${result}"
