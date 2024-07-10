@@ -87,6 +87,8 @@ pipeline {
                                 echo "Application already exists, undeploy it first"
                                 curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/undeploy?path=${CONTEXT_PATH}
                                 echo "Undeployed existing application."
+                            else
+                                echo "Deploying application to Tomcat."
                             fi
                         '''
 
