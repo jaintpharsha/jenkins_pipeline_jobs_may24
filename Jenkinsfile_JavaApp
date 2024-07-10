@@ -79,7 +79,7 @@ pipeline {
                         sh '''
                             echo "TOMCAT_URL: $TOMCAT_URL"
                             echo "CONTEXT_PATH: $CONTEXT_PATH"
-                            curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"
+                            curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH}
                             check_app=$(curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH})
 
                             echo "CHECK_APP $check_app"
