@@ -13,24 +13,28 @@ pipeline {
                 stage('Test in Chrome') {
                     steps {
                         echo "Tesing in Chrome Browser"
+                        sh 'sleep 10'
                     }
                 }
 
                 stage('Test in Opera') {
                     steps {
                         echo "Tesing in Opera Browser"
+                        sh 'sleep 10'
                     }
                 }
 
                 stage('Test in Safari') {
                     steps {
                         echo "Tesing in Safari Browser"
+                        sh 'sleep 10'
                     }
                 }
 
                 stage('Test in Firefox') {
                     steps {
                         echo "Tesing in Firefox Browser"
+                        sh 'sleep 10'
                     }
                 }
             }
