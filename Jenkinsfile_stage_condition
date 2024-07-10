@@ -1,7 +1,9 @@
 boolean testStatus = true
 
 pipeline {
-    agent any
+    agent {
+        label 'slave1'
+    }
 
     stages {
         stage('BUILD') {
@@ -60,14 +62,16 @@ pipeline {
     post {
         always {
             echo "This will run always"
-        }
-
-        failure {
-            echo "This will run on build Failure"
+            cleanWs()
         }
 
         success {
             echo "This will run on build Success"
+
+        }
+
+        failure {
+            echo "This will run on build Failure"
         }
     }
 
