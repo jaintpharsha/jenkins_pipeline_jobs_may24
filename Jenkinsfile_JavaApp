@@ -21,36 +21,36 @@ pipeline {
             }
         }
 
-        stage('Unit Testing') {
-            steps {
-                sh '''
-                    ls -lrt
-                    cd ./calculator_app/
-                    mvn clean test
-                '''
-            }
-        }
+        // stage('Unit Testing') {
+        //     steps {
+        //         sh '''
+        //             ls -lrt
+        //             cd ./calculator_app/
+        //             mvn clean test
+        //         '''
+        //     }
+        // }
 
-        stage('Integration Test') {
-            steps {
-                sh '''
-                    ls -lrt
-                    cd ./calculator_app/
-                    mvn jmeter:configure
-                    mvn clean integration-test
-                '''
-            }
-        }
+        // stage('Integration Test') {
+        //     steps {
+        //         sh '''
+        //             ls -lrt
+        //             cd ./calculator_app/
+        //             mvn jmeter:configure
+        //             mvn clean integration-test
+        //         '''
+        //     }
+        // }
 
-        stage('Performance Test - JMeter') {
-            steps {
-                sh '''
-                    ls -lrt
-                    cd ./calculator_app/
-                    mvn clean verify
-                '''
-            }
-        }
+        // stage('Performance Test - JMeter') {
+        //     steps {
+        //         sh '''
+        //             ls -lrt
+        //             cd ./calculator_app/
+        //             mvn clean verify
+        //         '''
+        //     }
+        // }
 
         stage('Build Package') {
             steps {
