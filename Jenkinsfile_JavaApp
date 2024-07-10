@@ -76,24 +76,18 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
-                        sh '''
-                            echo "TOMCAT_URL: $TOMCAT_URL"
-                            echo "CONTEXT_PATH: $CONTEXT_PATH"
-                            curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH}
-                            check_app=$(curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH})
+                        def list_app = sh(script: 'curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"',
+                                           returnStdout: true).trim()
+                        if (list_app) {
+                            echo "Application already exists, undeploy it first"
+                            sh "curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/undeploy?path=${CONTEXT_PATH}"
+                            echo "Undeployed existing application."
+                        }
 
-                            echo "CHECK_APP $check_app"
-                            if [[ -n "$check_app" ]]; then
-                                echo "Application already exists, undeploy it first"
-                                curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/undeploy?path=${CONTEXT_PATH}
-                                echo "Undeployed existing application."
-                            else
-                                echo "Deploying application to Tomcat."
-                            fi
-                        '''
+                        echo "Deploying application to Tomcat."
 
-                        def curlCmd = "curl -T calculator_app/target/calculator.war ${env.TOMCAT_URL}/manager/text/deploy?update=true&path=${env.CONTEXT_PATH} -u ${USERNAME}:${PASSWORD}"
-                        def result = sh(script: curlCmd, returnStdout: true).trim()
+                        def result = sh(script: 'curl -T calculator_app/target/calculator.war ${TOMCAT_URL}/manager/text/deploy?update=true&path=${CONTEXT_PATH} -u ${USERNAME}:${PASSWORD}',
+                                        returnStdout: true).trim()
                         echo "Deployment result: ${result}"
                     }
                 }
