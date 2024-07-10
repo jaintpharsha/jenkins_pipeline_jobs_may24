@@ -76,7 +76,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tomcat_manager', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
-                        def list_app = sh(script: 'curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep "${CONTEXT_PATH}"',
+                        def list_app = sh(script: 'curl -s -u ${USERNAME}:${PASSWORD} ${TOMCAT_URL}/manager/text/list | grep ${CONTEXT_PATH}',
                                            returnStdout: true).trim()
                         if (list_app) {
                             echo "Application already exists, undeploy it first"
