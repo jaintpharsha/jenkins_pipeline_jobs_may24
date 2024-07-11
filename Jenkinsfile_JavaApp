@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Check Files') {
+        stage('Load Testing') {
             steps {
                 dir('./calculator_app') {
                     sh 'mvn clean verify'
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage('Load Testing') {
+        stage('Check Files') {
             steps {
                 dir('./calculator_app/') {
                     sh 'tree'
