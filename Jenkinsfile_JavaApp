@@ -42,10 +42,9 @@ pipeline {
 
         stage('Deploy Tomcat10') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_manager',
-                                          url: 'http://3.110.27.147:8080',
-                                          contextPath: '/calculator',
-                                          war: 'calculator_app/target/calculator.war')]
+                deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', url: 'http://3.110.27.147:8080'), path: ''],
+                                  contextPath: '/calculator',
+                                  war: 'calculator_app/target/calculator.war'
             }
         }
     }
