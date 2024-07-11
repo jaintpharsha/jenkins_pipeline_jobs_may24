@@ -17,19 +17,26 @@ pipeline {
 
         stage('Unit Testing') {
             steps {
-                sh 'mvn test'
+                sh '''
+                    cd ./calculator_app
+                    mvn test
+                '''
             }
         }
 
         stage('Integration Testing') {
             steps {
-                sh 'mvn integration-test'
+                dir('./calculator_app') {
+                    sh 'mvn integration-test'
+                }
             }
         }
 
         stage('Load Testing') {
             steps {
-                sh 'mvn verify'
+                dir('./calculator_app') {
+                    sh 'mvn verify'
+                }
             }
         }
     }
