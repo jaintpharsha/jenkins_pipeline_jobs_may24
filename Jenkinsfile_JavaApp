@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Load Testing') {
+        stage('Check Files') {
             steps {
                 dir('./calculator_app') {
                     sh 'mvn clean verify'
