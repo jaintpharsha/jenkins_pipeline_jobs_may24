@@ -40,6 +40,14 @@ pipeline {
             }
         }
 
+        stage('Load Testing') {
+            steps {
+                dir('./calculator_app/') {
+                    sh 'tree'
+                }
+            }
+        }
+
         stage('Deploy Tomcat10') {
             input {
                 message "Do you want to deploy calculator.war to Tomcat10?"
