@@ -41,13 +41,29 @@ pipeline {
         }
 
         stage('Deploy Tomcat10') {
-            steps {
-                script {
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', url: 'http://3.110.27.147:8080', path: '')],
-                                    contextPath: '/calculator',
-                                    war: 'calculator_app/target/calculator.war'
+            input {
+                message "Do you want to deploy calculator.war to Tomcat10?"
+                parameters {
+                    choice(name: 'CHOICES', choices: ['yes', 'no'], description: '')
                 }
             }
+            steps {
+                script {
+                    if (CHOICES == 'yes') {
+                        deploy adapters: [tomcat9(credentialsId: 'tomcat_manager', url: 'http://3.110.27.147:8080', path: '')],
+                                        contextPath: '/calculator',
+                                        war: 'calculator_app/target/calculator.war'
+                    } else {
+                        echo "Skipping deployment to Tomcat10"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
