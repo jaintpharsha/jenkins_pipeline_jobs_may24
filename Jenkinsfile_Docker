@@ -37,10 +37,23 @@ pipeline {
             }
         }
 
-        stage('BUILD3') {
+        stage('Unit Testing') {
             steps {
                 maven_docker('mvn test')
             }
         }
+
+        stage('Integration Test') {
+            steps {
+                maven_docker('mvn integration-test')
+            }
+        }
+
+        stage('Load Testing') {
+            steps {
+                maven_docker('mvn clean verify')
+            }
+        }
+
     }
 }
