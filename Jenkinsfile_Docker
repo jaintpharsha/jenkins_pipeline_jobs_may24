@@ -39,8 +39,8 @@ pipeline {
 
         stage('Unit Testing3') {
             steps {
-                withDockerContainer(image: "maven", args: "-v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app") {
-                    sh "ls -lrt; pwd; mvn test"
+                withDockerContainer(image: "maven", args: "-v /home/ubuntu/.m2:/root/.m2") {
+                    sh "cd calculator_app; mvn test"
                 }
             }
         }
