@@ -55,5 +55,12 @@ pipeline {
             }
         }
 
+        stage('Check Files') {
+            steps {
+                dir('./calculator_app/') {
+                    sh 'tree'
+                }
+            }
+        }
     }
 }
