@@ -1,3 +1,7 @@
+def maven_docker(command) {
+    sh "docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven maven ${command}"
+}
+
 pipeline {
     agent any
     stages {
@@ -28,11 +32,14 @@ pipeline {
         stage('BUILD2') {
             steps {
                 sh '''
-                    cd ./calculator_app
-                    ls -lrt
-                    pwd
                     docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven maven mvn clean package
                 '''
+            }
+        }
+
+        stage('BUILD3') {
+            steps {
+                maven_docker('mvn test')
             }
         }
     }
