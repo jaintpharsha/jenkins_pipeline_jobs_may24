@@ -39,7 +39,7 @@ pipeline {
 
         stage('Unit Testing3') {
             steps {
-                withDockerContainer("maven", "-v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app") {
+                withDockerContainer(image: "maven", args: "-v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app") {
                     sh "mvn test"
                 }
             }
