@@ -1,0 +1,18 @@
+FROM jenkins/jenkins:jdk17
+USER root
+RUN apt update
+ENV TZ Asia/Calcutta
+RUN apt install -y sudo wget python3 awscli postgresql-client jq vim python3-pip gnupg software-properties-common
+RUN install -m 0755 -d /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN chmod a+r /etc/apt/keyrings/docker.gpg
+RUN echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt update
+RUN apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor > /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" > /etc/apt/sources.list.d/hashicorp.list
+RUN apt update && apt install -y terraform
+RUN rm /usr/lib/python3.11/EXTERNALLY-MANAGED
+EXPOSE 8080
+EXPOSE 50000
+USER 1001
