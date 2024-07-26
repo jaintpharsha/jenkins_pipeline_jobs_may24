@@ -1,7 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('CHECKOUT') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        credentialsId: 'github_hp']]])
+            }
+        }
+        stage('BUILD1') {
             agent {
                 docker {
                     image 'maven'
@@ -14,6 +22,12 @@ pipeline {
                         userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
                         credentialsId: 'github_hp']]])
                 sh 'cd calculator_app; mvn test'
+            }
+        }
+
+        stage('BUILD2') {
+            steps {
+                sh 'docker run -it --rm -v $HOME/.m2:/root/.m2 -v "$(pwd)":/app -w /app --name run_maven my_maven mvn clean package'
             }
         }
     }
