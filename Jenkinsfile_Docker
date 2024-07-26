@@ -31,7 +31,7 @@ pipeline {
                     cd ./calculator_app
                     ls -lrt
                     pwd
-                    docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven my_maven mvn clean package
+                    docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven maven mvn clean package
                 '''
             }
         }
