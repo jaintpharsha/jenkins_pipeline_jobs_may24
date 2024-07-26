@@ -11,8 +11,11 @@ pipeline {
         }
 
         stage('Build') {
+            agent {
+                docker { image 'maven' }
+            }
            steps {
-                sh 'ls -lrt'
+                sh 'mvn test'
            }
         }
     }
