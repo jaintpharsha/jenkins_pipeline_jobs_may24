@@ -39,13 +39,12 @@ pipeline {
 
         stage('Unit Testing3') {
             steps {
-
                 withDockerContainer("maven") {
                     checkout([$class: 'GitSCM',
                         branches: [[name: 'main']],
                         userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
                         credentialsId: 'github_hp']]])
-                    sh "mvn test"
+                    sh "ls -lrt; cd calculator_app; mvn test"
                 }
             }
         }
