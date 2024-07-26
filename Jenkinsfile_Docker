@@ -29,6 +29,8 @@ pipeline {
             steps {
                 sh '''
                     cd ./calculator_app
+                    ls -lrt
+                    pwd
                     docker run -i --rm -v "$(pwd)":/app -w /app --name run_maven my_maven mvn clean package
                 '''
             }
