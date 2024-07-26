@@ -10,7 +10,7 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+        stage('Build') {
            steps {
                 sh 'ls -lrt'
            }
