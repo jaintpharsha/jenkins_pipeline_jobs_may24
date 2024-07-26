@@ -28,9 +28,8 @@ pipeline {
         stage('BUILD2') {
             steps {
                 sh '''
-                    ls -lrt
                     cd ./calculator_app
-                    docker run -i --rm -v $HOME/.m2:/root/.m2 -v "$(pwd)":/app -w /app --name run_maven my_maven mvn clean package
+                    docker run -i --rm -v "$(pwd)":/app -w /app --name run_maven my_maven mvn clean package
                 '''
             }
         }
