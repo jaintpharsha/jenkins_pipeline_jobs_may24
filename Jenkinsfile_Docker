@@ -13,7 +13,7 @@ pipeline {
                         credentialsId: 'github_hp']]])
             }
         }
-        stage('BUILD1') {
+        stage('Unit Testing1') {
             agent {
                 docker {
                     image 'maven'
@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('BUILD2') {
+        stage('Unit Testing2') {
             steps {
                 sh '''
                     docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven maven mvn clean package
@@ -37,7 +37,14 @@ pipeline {
             }
         }
 
-        stage('Unit Testing') {
+        stage('Unit Testing3') {
+            steps {
+                withDockerContainer("maven") { sh "mvn test"}
+            }
+        }
+
+
+        stage('Unit Testing4') {
             steps {
                 maven_docker('mvn test')
             }
