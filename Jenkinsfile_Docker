@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    stages {
+        stage('CHECKOUT') {
+            steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        credentialsId: 'github_hp']]])
+            }
+        }
+    }
+}
