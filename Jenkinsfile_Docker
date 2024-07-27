@@ -1,3 +1,7 @@
+def docker_mvn(command) {
+    sh "docker run -i --rm -w /app -v calculator_app:/app maven ${command}"
+}
+
 pipeline {
     agent any
     stages {
@@ -10,10 +14,26 @@ pipeline {
             }
         }
 
-        stage('BUILD') {
+        stage('Unit Testing') {
             steps {
                 script {
-                    sh 'docker run -i --rm -w /app -v calculator_app:/app maven mvn clean test'
+                    docker_mvn('mvn test')
+                }
+            }
+        }
+
+        stage('Integration Testing') {
+            steps {
+                script {
+                    docker_mvn('mvn integration-test')
+                }
+            }
+        }
+
+        stage('Load Testing') {
+            steps {
+                script {
+                    docker_mvn('mvn clean verify')
                 }
             }
         }
