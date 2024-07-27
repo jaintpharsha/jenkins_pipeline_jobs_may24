@@ -74,11 +74,13 @@ pipeline {
 
         stage('Build and Push') {
             steps {
-                def tomcatImage = ''
-                dir('./calculator_app/') {
-                    tomcatImage = docker.build("calculator:latest", ".")
-                    docker.withRegistry('', 'docker_hub') {
-                        tomcatImage.push()
+                script {
+                    def tomcatImage = ''
+                    dir('./calculator_app/') {
+                        tomcatImage = docker.build("calculator:latest", ".")
+                        docker.withRegistry('', 'docker_hub') {
+                            tomcatImage.push()
+                        }
                     }
                 }
             }
