@@ -69,9 +69,8 @@ pipeline {
                 script {
                     def tomcatImage = ''
                     dir('./calculator_app/') {
-                        sh 'cd target; ls -lrt'
-                        tomcatImage = docker.build("java_app:latest", " .")
                         docker.withRegistry('', 'docker_hub') {
+                            tomcatImage = docker.build("harshaprakash/java_app:latest", " .")
                             tomcatImage.push()
                         }
                     }
