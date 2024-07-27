@@ -13,56 +13,55 @@ pipeline {
                         credentialsId: 'github_hp']]])
             }
         }
-        // stage('Unit Testing1') {
-        //     agent {
-        //         docker {
-        //             image 'maven'
-        //             args '-v $HOME/.m2:/root/.m2'
-        //         }
-        //     }
-        //    steps {
-        //         checkout([$class: 'GitSCM',
-        //                 branches: [[name: 'main']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
-        //                 credentialsId: 'github_hp']]])
-        //         sh 'cd calculator_app; mvn test'
-        //     }
-        // }
+        stage('Unit Testing1') {
+            agent {
+                docker {
+                    image 'maven'
+                    args '-v $HOME/.m2:/root/.m2'
+                }
+            }
+           steps {
+                checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                        credentialsId: 'github_hp']]])
+                sh 'cd calculator_app; mvn test'
+            }
+        }
 
-        // stage('Unit Testing2') {
-        //     steps {
-        //         sh '''
-        //             docker run -i --rm -v /home/ubuntu/.m2:/root/.m2 -v calculator_app:/app -w /app --name run_maven maven mvn clean package
-        //         '''
-        //     }
-        // }
+        stage('Unit Testing2') {
+            steps {
+                sh '''
+                    docker run -i --rm -v calculator_app:/app -w /app --name run_maven maven mvn clean package
+                '''
+            }
+        }
 
-        // stage('Unit Testing3') {
-        //     steps {
-        //         withDockerContainer(image: "maven", args: "-v /home/ubuntu/.m2:/root/.m2") {
-        //             sh "cd calculator_app; mvn test"
-        //         }
-        //     }
-        // }
+        stage('Unit Testing3') {
+            steps {
+                withDockerContainer(image: "maven") {
+                    sh "cd calculator_app; mvn test"
+                }
+            }
+        }
 
+        stage('Unit Testing4') {
+            steps {
+                maven_docker('mvn test')
+            }
+        }
 
-        // stage('Unit Testing4') {
-        //     steps {
-        //         maven_docker('mvn test')
-        //     }
-        // }
+        stage('Integration Test') {
+            steps {
+                maven_docker('mvn integration-test')
+            }
+        }
 
-        // stage('Integration Test') {
-        //     steps {
-        //         maven_docker('mvn integration-test')
-        //     }
-        // }
-
-        // stage('Load Testing') {
-        //     steps {
-        //         maven_docker('mvn clean verify')
-        //     }
-        // }
+        stage('Load Testing') {
+            steps {
+                maven_docker('mvn clean verify')
+            }
+        }
 
         stage('Build and Push') {
             steps {
