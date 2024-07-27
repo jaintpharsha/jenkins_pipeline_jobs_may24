@@ -71,5 +71,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Build and Push') {
+            steps {
+                dir('./calculator_app/') {
+                    tomcatImage = docker.build("calculator:latest", ".")
+                    docker.withRegistry('', 'docker_hub') {
+                        tomcatImage.push()
+                    }
+                }
+            }
+        }
     }
 }
