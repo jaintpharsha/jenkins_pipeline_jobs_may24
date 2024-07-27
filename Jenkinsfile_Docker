@@ -72,7 +72,7 @@ pipeline {
 
         stage('Check Files') {
             steps {
-                dir('./calculator_app/') {
+                dir('./calculator_app/target') {
                     sh 'ls -lrt'
                 }
             }
