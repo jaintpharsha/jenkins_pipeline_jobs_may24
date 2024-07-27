@@ -1,20 +1,17 @@
 pipeline {
     agent any
     stages {
-        stage('CHECKOUT') {
-            steps {
-                checkout([$class: 'GitSCM',
-                        branches: [[name: 'main']],
-                        userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
-                        credentialsId: 'github_hp']]])
+        stage('TEST') {
+            agent {
+                docker { image 'maven' }
             }
-        }
-
-        stage('BUILD') {
             steps {
-                dir('./calculator_app') {
-                    sh 'ls -lrt'
-                    sh 'docker build -t harshaprakash/java_app .'
+                script {
+                    checkout([$class: 'GitSCM',
+                            branches: [[name: 'main']],
+                            userRemoteConfigs: [[url: 'https://github.com/harshaprakash100/java_app.git',
+                            credentialsId: 'github_hp']]])
+                    sh 'mvn clean test'
                 }
             }
         }
