@@ -9,5 +9,13 @@ pipeline {
                         credentialsId: 'github_hp']]])
             }
         }
+
+        stage('BUILD') {
+            steps {
+                dir('./calculator_app') {
+                    sh 'ls -lrt'
+                }
+            }
+        }
     }
 }
